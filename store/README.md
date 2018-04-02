@@ -1,4 +1,6 @@
-# STORE
+# Nuxt.js
+
+## STORE
 
 This directory contains your Vuex Store files.
 Vuex Store option is implemented in the Nuxt.js framework.

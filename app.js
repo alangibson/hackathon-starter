@@ -19,8 +19,22 @@ const expressValidator = require('express-validator');
 const expressStatusMonitor = require('express-status-monitor');
 const sass = require('node-sass-middleware');
 const multer = require('multer');
+const { Nuxt, Builder } = require('nuxt');
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
+
+/**
+ * Configure Nuxt. Middleware is .use'd at the end of this file.
+ */
+
+let nuxtConfig = require('./nuxt.config.js');
+nuxtConfig.dev = !(process.env.NODE_ENV === 'production');
+const nuxt = new Nuxt(nuxtConfig);
+// Build only in dev mode
+if (nuxtConfig.dev) {
+  const builder = new Builder(nuxt);
+  builder.build();
+}
 
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
@@ -216,6 +230,13 @@ app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public
 app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), (req, res) => {
   res.redirect('/api/pinterest');
 });
+
+/**
+ * Nuxt middleware
+ *
+ * Nuxt needs to go at the end so that all other routes configured above work.
+ */
+app.use(nuxt.render);
 
 /**
  * Error Handler.
