@@ -1,11 +1,15 @@
 {
-  "extends": "airbnb-base",
+  "extends": "plugin:vue/essential",
   "env": {
     "node": true,
     "mocha": true,
-    "es6": true
+    "es6": true,
+    "browser": true
   },
-  "plugins": ["chai-friendly"],
+  "plugins": [
+    "chai-friendly",
+    "vue"
+  ],
   "rules": {
     "comma-dangle": 0,
     "consistent-return": 0,
